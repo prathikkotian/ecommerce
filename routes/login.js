@@ -1,52 +1,51 @@
 var express = require('express');
 var mysql = require('mysql')
 
-//DB Connection Properties
-var connection = mysql.createConnection({
-  host     : 'localhost',
-  user     : 'root',
-  password : 'admin',
-  database : 'calculator'
-});
 var router = express.Router();
-var session;
+
+var connection = require('./connection');
 var dbPasswd;
 var firstName;
 
 /* Log into the application. */
 router.post('/', function(req, res, next) {
+var session;
   session = req.session;
-  if(session.uniqueID){
-	req.session.destroy();
-  }
   var uname = req.body.username;
   var password = req.body.password;
   
-  var sql = 'SELECT password, first_name from login where username=' +mysql.escape(uname);
-  
-  //Query the login table
-  connection.query(sql, function (err, rows, fields) {
-	if (err) throw err
-	if(rows[0] != null){
-		dbPasswd = rows[0].password;
-		firstName = rows[0].first_name;
-	}else{
-		dbPasswd = null;
-	}
+  var sql = 'SELECT password, first_name from users where username=' +mysql.escape(uname);
+ 
+  connection.getConnection(function(err,connection){
+	//Query the login table
+	connection.query(sql, function (err, rows, fields) {
+		if (err) throw err
+		if(rows[0] != null){
+			dbPasswd = rows[0].password;
+			firstName = rows[0].first_name;
+		}else{
+			dbPasswd = null;
+		}
 	
-	if(password == dbPasswd){
-		session.uniqueID = uname;
-		res.json({
-			"message":"Welcome " +firstName
-		});
-	}else{
-		res.json({
-			"message":"There seems to be an issue with the username/password combination that you entered"
-		});
-	}
-})
-  
-
+		if(password == dbPasswd & uname != null && password != null){
+			session.uniqueID = uname;
+			session.fname = firstName;
+			if(uname == 'jadmin'){
+				session.role='admin';
+			}else{
+				session.role=null;
+			}	
+			res.json({
+				"message":"Welcome " +firstName
+			});
+		}else{
+			res.json({
+				"message":"There seems to be an issue with the username/password combination that you entered"
+			});
+		}
+		connection.release();  
+	}); 
+   });
 });
 
-module.exports = router;
+module.exports = router;	

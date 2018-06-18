@@ -12,6 +12,7 @@
     "express-session": "^1.15.6",
     "express-validate": "0.0.8",
     "http-errors": "~1.6.2",
+    "is-null-or-empty": "0.0.1",
     "morgan": "~1.9.0",
     "mysql": "^2.15.0",
     "pug": "2.0.0-beta11"

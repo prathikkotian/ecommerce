@@ -1,9 +1,10 @@
 var express = require('express');
 var router = express.Router();
-var session;
+
 
 /* Logout of the application. */
 router.post('/', function(req, res, next) {
+var session;
   session = req.session;
   if(session.uniqueID){
 	req.session.destroy();

@@ -5,34 +5,41 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var sessions = require('express-session');
 var loginRouter = require('./routes/login');
-var addRouter = require('./routes/add');
-var multiplyRouter = require('./routes/multiply');
-var divideRouter = require('./routes/divide');
+var registerRouter = require('./routes/register');
+var updateContactRouter = require('./routes/updateContact');
+var addProductRouter = require('./routes/addProduct');
+var modifyProductRouter = require('./routes/modifyProduct');
 var logoutRouter = require('./routes/logout');
-
+var viewUsersRouter = require('./routes/viewUsers');
+var viewProductsRouter = require('./routes/viewProducts');
 var app = express();
 
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-
+app.set('view engine', 'pug');
 //session properties
 app.use(sessions({
   secret:'kfebwfwkjb5654fvfwe',
+  rolling: false,	
   resave: false,
   saveUninitialized: false,
   cookie: { maxAge: 900000 }
 }));
 
-app.use(cookieParser());
+//app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 // route post requests
 app.use('/login', loginRouter);
-app.use('/add', addRouter);
-app.use('/multiply', multiplyRouter);
-app.use('/divide', divideRouter);
+app.use('/registerUser', registerRouter);
+app.use('/updateInfo', updateContactRouter);
+app.use('/addProducts', addProductRouter);
+app.use('/modifyProduct', modifyProductRouter);
+app.use('/viewUsers', viewUsersRouter);
+app.use('/viewProducts', viewProductsRouter);
 app.use('/logout', logoutRouter);
+
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
