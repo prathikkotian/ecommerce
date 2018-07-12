@@ -7,22 +7,40 @@ var connection = require('./connection');
 router.post('/', function(req, res, next) {
 var session;
   session = req.session;
-
+//process.env.UV_THREADPOOL_SIZE = 10;
 	var asin = req.body.asin;
 	var keyword = req.body.keyword;
 	var group = req.body.group;
-	
-	if(isNull(keyword))
-		keyword='';
-	if(isNull(group))
-		group='';
-	
 	var sql;
-	if(isNull(asin)){
-		sql = "select asin,product_name from products where (product_name like '%"+keyword+"%' or product_description like 				'%"+keyword+"%') and groups like '%"+group+"%'";	
-	}else{
-		sql = "select asin,product_name from products where asin = '"+asin+"' and (product_name like '%"+keyword+"%' or 			product_description like '%"+keyword+"%') and groups like '%"+group+"%'";
+	var phrase;
+
+	if(!isNull(keyword)){
+		if(keyword.length > 2){
+			phrase = "match (product_name,product_description) against ('"+keyword+"')";
+		}else{
+			phrase = "(product_name like '%"+keyword+"%' or product_description like '%"+keyword+"%')";
+		}	
 	}
+
+	if(isNull(asin) && isNull(keyword) && isNull(group)){
+		sql = "select asin,product_name from products";
+	}else if(isNull(asin) && isNull(keyword) && !isNull(group)){
+		sql = "select asin,product_name from products where groups like '%"+group+"%'";
+	}else if(isNull(asin) && !isNull(keyword) && isNull(group)){
+		sql = "select asin, product_name from products where "+phrase;		
+	}else if(!isNull(asin) && isNull(keyword) && isNull(group)){
+		sql = "select asin,product_name from products where asin='"+asin+"'";
+	}
+	else if(isNull(asin) && !isNull(keyword) && !isNull(group)){
+		sql = "select asin, product_name from products where "+phrase+" and groups like '%"+group+"%'";	
+	}else if(!isNull(asin) && isNull(keyword) && !isNull(group)){
+		sql = "select asin,product_name from products where asin='"+asin+"' and groups like '%"+group+"%'";	
+	}else if(!isNull(asin) && !isNull(keyword) && isNull(group)){
+		sql = "select asin,product_name from products where asin='"+asin+"' and "+phrase;	
+	}else{
+		sql = "select asin,product_name from products where asin='"+asin+"' and "+phrase+" and groups like '%"+group+"%'";	
+	}
+	
 	connection.getConnection(function(err, connection){
 		connection.query(sql, function (err, rows, fields) {
 			if(err) throw err

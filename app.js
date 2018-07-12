@@ -12,6 +12,9 @@ var modifyProductRouter = require('./routes/modifyProduct');
 var logoutRouter = require('./routes/logout');
 var viewUsersRouter = require('./routes/viewUsers');
 var viewProductsRouter = require('./routes/viewProducts');
+var buyProductsRouter = require('./routes/buyProducts');
+var getRecommendationsRouter = require('./routes/getRecommendations');
+var productsPurchasedRouter = require('./routes/productsPurchased');
 var app = express();
 
 app.use(logger('dev'));
@@ -27,7 +30,7 @@ app.use(sessions({
   cookie: { maxAge: 900000 }
 }));
 
-//app.use(cookieParser());
+app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 // route post requests
@@ -38,9 +41,19 @@ app.use('/addProducts', addProductRouter);
 app.use('/modifyProduct', modifyProductRouter);
 app.use('/viewUsers', viewUsersRouter);
 app.use('/viewProducts', viewProductsRouter);
+app.use('/buyProducts', buyProductsRouter);
+app.use('/getRecommendations', getRecommendationsRouter);
+app.use('/productsPurchased', productsPurchasedRouter);
 app.use('/logout', logoutRouter);
 
-
+app.get('/ping.html', function(req, res){
+	response.writeHead(200, {
+            'Content-Type': 'text/plain',
+            'Content-Length': 2
+        });
+        response.write('OK');
+        response.end();
+});
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   next(createError(404));
@@ -48,13 +61,7 @@ app.use(function(req, res, next) {
 
 // error handler
 app.use(function(err, req, res, next) {
-  // set locals, only providing error in development
-  res.locals.message = err.message;
-  res.locals.error = req.app.get('env') === 'development' ? err : {};
-
-  // render the error page
-  res.status(err.status || 500);
-  res.render('error');
+  if(err) throw err;
 });
 
 module.exports = app;
