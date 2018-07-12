@@ -37,6 +37,13 @@ var session;
 			column['username'] = username;
 		if(!isNull(password))
 			column['password'] = password;
+		
+		if(isNull(fname) && isNull(lname) && isNull(address) && isNull(city) && isNull(state) && isNull(zip) && isNull(email)
+			&& isNull(username) && isNull(password)){
+			res.json({
+					"message":"The input you provided is not valid"
+				});		
+		}
 
 		var sessionName = session.uniqueID;
 		var sql = "update users set ? where username = ?";
@@ -52,6 +59,9 @@ var session;
 				}else{
 					if(!isNull(fname) && fname != session.fname){
 						session.fname = fname;
+					}
+					if(!isNull(username) && username != session.uniqueID){
+						session.uniqueID = username;
 					}
 					res.json({
 						"message":session.fname+" your information was successfully updated"
