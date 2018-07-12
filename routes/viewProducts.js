@@ -42,6 +42,7 @@ var session;
 	}
 	
 	connection.getConnection(function(err, connection){
+		if(err) throw err
 		connection.query(sql, function (err, rows, fields) {
 			if(err) throw err
 			

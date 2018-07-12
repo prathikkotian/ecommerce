@@ -22,8 +22,10 @@ var session;
 			asin.push(jsonObj[i]["asin"]);	
 		}
 		connection.getConnection(function(err, connection){
+			if(err) throw err
 			var select_sql = "select count(asin) as count from products where asin in (?)";
 			connection.query(select_sql, [asin], function (err, rows, fields) {
+				if(err) throw err
 				var filteredAsin = asin.filter(function(item, pos){
 					return asin.indexOf(item)== pos; 
 				});
@@ -39,21 +41,28 @@ var session;
 					}
 					connection.query(purchase_sql, [purchases], function (err, rows, fields) {
 						if(err) throw err
-						var recommendations_sql = "insert into recommendations (asin,linked_asin) values ?";
-						var recommendations = [];
-						for(var i in asin){
-							for(var j in asin){
-								if(i != j){
-									recommendations.push([asin[i], asin[j]]);	
-								}						
+						if(filteredAsin.length > 1){
+							var recommendations_sql = "insert into recommendations (asin,linked_asin) values ?";
+							var recommendations = [];
+							for(var i in filteredAsin){
+								for(var j in filteredAsin){
+									if(filteredAsin[i] != filteredAsin[j]){
+										recommendations.push([filteredAsin[i], filteredAsin[j]]);	
+									}						
+								}
 							}
-						}
-						connection.query(recommendations_sql, [recommendations], function (err, rows, fields) {		
-							if(err) throw err
-							res.json({
-								"message":"The action was successful"
+							connection.query(recommendations_sql, [recommendations],
+							function(err, rows, fields){		
+								if(err) throw err
+								res.json({
+									"message":"The action was successful"
+								});
 							});
-						});
+						}else{
+							res.json({
+									"message":"The action was successful"
+								});
+						}
 					});					
 				}
 				connection.release();

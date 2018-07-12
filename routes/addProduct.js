@@ -21,6 +21,7 @@ var session;
 				});		
 			}else{		
 				connection.getConnection(function(err, connection){
+					if(err) throw err
 					var sql = "insert into products (asin, product_name, product_description, groups) values (?)";
 					connection.query(sql, [record], function (err, rows, fields) {
 						if (err && err.code == 'ER_DUP_ENTRY') {

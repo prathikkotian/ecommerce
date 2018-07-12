@@ -12,6 +12,7 @@ router.post('/', function(req, res, next) {
 		var sql;
 		
 		connection.getConnection(function(err, connection){
+			if(err) throw err
 			sql = "select linked_asin,count(linked_asin) as count from recommendations where asin=? group by linked_asin order by count 					desc limit 5"
 			connection.query(sql, asin, function (err, rows, fields) {
 				if(err) throw err

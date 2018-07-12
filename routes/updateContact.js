@@ -41,6 +41,7 @@ var session;
 		var sessionName = session.uniqueID;
 		var sql = "update users set ? where username = ?";
 		connection.getConnection(function(err, connection){
+			if(err) throw err
 			connection.query(sql, [column,sessionName], function (err, rows, fields) {
 				if (err && err.code == 'ER_DUP_ENTRY') {			
 					res.json({

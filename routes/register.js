@@ -24,6 +24,7 @@ var session;
 	}else{
 		var sql = "insert into users (first_name, last_name, address, city, state, zip, email, username, password) values (?)";
 		connection.getConnection(function(err, connection){
+			if(err) throw err
 			connection.query(sql, [record], function (err, rows, fields) {
 				if (err && err.code == 'ER_DUP_ENTRY') {			
 					res.json({

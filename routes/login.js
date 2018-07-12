@@ -17,6 +17,7 @@ var session;
   var sql = 'SELECT password, first_name from users where username=' +mysql.escape(uname);
  
   connection.getConnection(function(err,connection){
+	if(err) throw err
 	//Query the login table
 	connection.query(sql, function (err, rows, fields) {
 		if (err) throw err

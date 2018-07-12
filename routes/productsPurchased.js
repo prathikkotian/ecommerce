@@ -12,6 +12,7 @@ router.post('/', function(req, res, next) {
 			var username = req.body.username;
 			var sql;
 			connection.getConnection(function(err, connection){
+				if(err) throw err
 				sql = "select a.product_name, count(b.asin) as quantity from products a, purchase b where b.asin = a.asin and 						b.username = ? group by a.product_name";
 				connection.query(sql, username, function (err, rows, fields) {
 					if(err) throw err

@@ -20,6 +20,7 @@ var session;
 				});		
 			}else{
 				connection.getConnection(function(err, connection){
+					if(err) throw err
 					var sql = "update products set product_name = ?, product_description = ? where asin = ? and groups = ?";
 					connection.query(sql, [productName,productDescription,asin,group], function (err, rows, fields) {
 						if ((err && err.code == 'ER_DUP_ENTRY') || rows.affectedRows == 0) {

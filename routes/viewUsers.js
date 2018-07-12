@@ -22,6 +22,7 @@ var session;
 				sql = "select first_name, last_name, username from users where first_name like '%"+fname+"%' and last_name like 				'%"+lname+"%' and username != 'jadmin'";
 			}
 			connection.getConnection(function(err, connection){
+				if(err) throw err
 				connection.query(sql, function (err, rows, fields) {
 					if(err) throw err
 					if(rows.length == 0){
