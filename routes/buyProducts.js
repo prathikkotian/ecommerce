@@ -24,7 +24,10 @@ var session;
 		connection.getConnection(function(err, connection){
 			var select_sql = "select count(asin) as count from products where asin in (?)";
 			connection.query(select_sql, [asin], function (err, rows, fields) {
-				if (rows[0].count != asin.length) {
+				var filteredAsin = asin.filter(function(item, pos){
+					return asin.indexOf(item)== pos; 
+				});
+				if (rows[0].count != filteredAsin.length) {
 					res.json({
 						"message":"There are no products that match that criteria"
 					});	
