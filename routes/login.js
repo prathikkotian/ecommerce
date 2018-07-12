@@ -21,8 +21,8 @@ var session;
 	connection.query(sql, function (err, rows, fields) {
 		if (err) throw err
 		if(rows[0] != null){
-			dbPasswd = rows[0].password;
-			firstName = rows[0].first_name;
+			dbPasswd = rows[0].password.trim();
+			firstName = rows[0].first_name.trim();
 		}else{
 			dbPasswd = null;
 		}
