@@ -14,14 +14,16 @@ var session;
 	var zip = req.body.zip;
 	var email = req.body.email;
 	var username = req.body.username;
-	var password = req.body.password;
-	var record = [fname, lname, address, city, state, zip, email, username, password];
+	var password = req.body.password;	
 	if(isNull(fname) || isNull(lname) || isNull(address) || isNull(city) 
 		|| isNull(state) || isNull(zip) || isNull(email) || isNull(username) || isNull(password)){
 		res.json({
 			"message":"The input you provided is not valid"
 		});		
 	}else{
+		city = city.replace(/[\u0800-\uFFFF]/g, '');
+		state = state.replace(/[\u0800-\uFFFF]/g, '');
+		var record = [fname, lname, address, city, state, zip, email, username, password];
 		var sql = "insert into users (first_name, last_name, address, city, state, zip, email, username, password) values (?)";
 		connection.getConnection(function(err, connection){
 			if(err) throw err
