@@ -16,7 +16,7 @@ var session;
 
 	if(!isNull(keyword)){
 		if(keyword.length > 2){
-			phrase = "match (product_name,product_description) against ('\""+keyword+"'\" in boolean mode)";
+			phrase = "match (product_name,product_description) against ('\"+"+keyword+"\"' in boolean mode)";
 		}else{
 			phrase = "(product_name like '%"+keyword+"%' or product_description like '%"+keyword+"%')";
 		}	
