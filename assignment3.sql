@@ -13,4 +13,4 @@ asin varchar(50),
 username varchar(50)
 );
 
-alter table products modify fulltext(product_name, product_description);
+alter table products add fulltext(product_name, product_description);

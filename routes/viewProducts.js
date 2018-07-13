@@ -16,7 +16,7 @@ var session;
 
 	if(!isNull(keyword)){
 		if(keyword.length > 2){
-			phrase = "match (product_name,product_description) against ('"+keyword+"')";
+			phrase = "match (product_name,product_description) against ('\""+keyword+"'\" in boolean mode)";
 		}else{
 			phrase = "(product_name like '%"+keyword+"%' or product_description like '%"+keyword+"%')";
 		}	
@@ -25,20 +25,20 @@ var session;
 	if(isNull(asin) && isNull(keyword) && isNull(group)){
 		sql = "select asin,product_name from products";
 	}else if(isNull(asin) && isNull(keyword) && !isNull(group)){
-		sql = "select asin,product_name from products where groups like '%"+group+"%'";
+		sql = "select asin,product_name from products where groups ='"+group+"'";
 	}else if(isNull(asin) && !isNull(keyword) && isNull(group)){
 		sql = "select asin, product_name from products where "+phrase;		
 	}else if(!isNull(asin) && isNull(keyword) && isNull(group)){
 		sql = "select asin,product_name from products where asin='"+asin+"'";
 	}
 	else if(isNull(asin) && !isNull(keyword) && !isNull(group)){
-		sql = "select asin, product_name from products where "+phrase+" and groups like '%"+group+"%'";	
+		sql = "select asin, product_name from products where "+phrase+" and groups ='"+group+"'";	
 	}else if(!isNull(asin) && isNull(keyword) && !isNull(group)){
-		sql = "select asin,product_name from products where asin='"+asin+"' and groups like '%"+group+"%'";	
+		sql = "select asin,product_name from products where asin='"+asin+"' and groups ='"+group+"'";	
 	}else if(!isNull(asin) && !isNull(keyword) && isNull(group)){
 		sql = "select asin,product_name from products where asin='"+asin+"' and "+phrase;	
 	}else{
-		sql = "select asin,product_name from products where asin='"+asin+"' and "+phrase+" and groups like '%"+group+"%'";	
+		sql = "select asin,product_name from products where asin='"+asin+"' and "+phrase+" and groups like '"+group+"'";	
 	}
 	
 	connection.getConnection(function(err, connection){

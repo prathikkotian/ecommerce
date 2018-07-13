@@ -22,7 +22,7 @@ router.post('/', function(req, res, next) {
 							"message":"There are no users that match that criteria"	
 						});
 					}else{
-						var jsonStr = '{"message":"The action was successful", "products":[]}';
+						var jsonStr = '{"message":"The action was successful","products":[]}';
 						var obj = JSON.parse(jsonStr);
 						for(var i=0;i<rows.length;i++){
 							obj['products'].push({"productName":rows[i].product_name,"quantity":rows[i].quantity});
