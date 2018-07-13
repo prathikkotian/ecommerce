@@ -38,7 +38,7 @@ var session;
 	}else if(!isNull(asin) && !isNull(keyword) && isNull(group)){
 		sql = "select asin,product_name from products where asin='"+asin+"' and "+phrase;	
 	}else{
-		sql = "select asin,product_name from products where asin='"+asin+"' and "+phrase+" and groups like '"+group+"'";	
+		sql = "select asin,product_name from products where asin='"+asin+"' and "+phrase+" and groups = '"+group+"'";	
 	}
 	
 	connection.getConnection(function(err, connection){
