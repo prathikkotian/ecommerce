@@ -3,7 +3,7 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
-var sessions = require('express-session');
+var sessions = require('cookie-session');
 var loginRouter = require('./routes/login');
 var registerRouter = require('./routes/register');
 var updateContactRouter = require('./routes/updateContact');
@@ -47,12 +47,12 @@ app.use('/productsPurchased', productsPurchasedRouter);
 app.use('/logout', logoutRouter);
 
 app.get('/ping.html', function(req, res){
-	response.writeHead(200, {
+	res.writeHead(200, {
             'Content-Type': 'text/plain',
             'Content-Length': 2
         });
-        response.write('OK');
-        response.end();
+        res.write('OK');
+        res.end();
 });
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
