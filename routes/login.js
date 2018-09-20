@@ -1,3 +1,9 @@
+/*
+Login module
+@author: Prathik Kotian
+@module: routes/login
+*/
+
 var express = require('express');
 var mysql = require('mysql')
 

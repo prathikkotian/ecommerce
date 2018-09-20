@@ -1,3 +1,9 @@
+/*
+Logout module
+@author: Prathik Kotian
+@module: routes/logout
+*/
+
 var express = require('express');
 var router = express.Router();
 

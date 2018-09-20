@@ -1,3 +1,9 @@
+/*
+View Products module
+@author: Prathik Kotian
+@module: routes/viewProducts
+*/
+
 var express = require('express');
 var router = express.Router();
 var isNull = require('is-null-or-empty');

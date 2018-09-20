@@ -1,3 +1,9 @@
+/*
+View registered users module
+@author: Prathik Kotian
+@module: routes/viewUsers
+*/
+
 var express = require('express');
 var router = express.Router();
 var isNull = require('is-null-or-empty');

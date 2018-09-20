@@ -1,3 +1,9 @@
+/*
+Registration module
+@author: Prathik Kotian
+@module: routes/register
+*/
+
 var express = require('express');
 var router = express.Router();
 var isNull = require('is-null-or-empty');

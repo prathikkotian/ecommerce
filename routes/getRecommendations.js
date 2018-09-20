@@ -1,9 +1,15 @@
+/*
+Get Recommendations module
+@author: Prathik Kotian
+@module: routes/getRecommendations
+*/
+
 var express = require('express');
 var router = express.Router();
 var isNull = require('is-null-or-empty');
 var connection = require('./connection');
 
-/*Get recommendations */
+/*Get recommendations for the prodcuts*/
 router.post('/', function(req, res, next) {
 	var session;
 	session = req.session;
